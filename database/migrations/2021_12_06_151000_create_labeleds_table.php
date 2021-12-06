@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAudioBooksCategoriesTable extends Migration
+class CreateLabeledsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateAudioBooksCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('audio_books_categories', function (Blueprint $table) {
+        Schema::create('labeled', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('book_id');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateAudioBooksCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('audio_books_categories');
+        Schema::dropIfExists('labeleds');
     }
 }
