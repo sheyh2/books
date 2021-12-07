@@ -16,6 +16,7 @@ class CreateSubCategoriesTable extends Migration
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id');
+            $table->enum('lang', ['uz', 'ru']);
             $table->string('title', 255);
             $table->softDeletes();
             $table->timestamps();

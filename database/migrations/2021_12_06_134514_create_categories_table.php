@@ -15,7 +15,7 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id');
+            $table->enum('lang', ['uz', 'ru']);
             $table->string('title', 255);
             $table->softDeletes();
             $table->timestamps();
