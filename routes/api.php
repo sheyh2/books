@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\BookController;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/user')->group(function(Router $router) {
-    $router->post('store', [UserController::class, 'store']);
+//    $router->post('store', [UserController::class, 'store']);
+});
+
+Route::prefix('book')->group(function (Router $router) {
+    $router->get('getBooks', [BookController::class, 'index']);
 });

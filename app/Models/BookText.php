@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class BookText
  * @package App\Models\BookText
- * @property int $id
- * @property int $book_id
+ *
+ * @property int    $id
+ * @property int    $book_id
  * @property string $lang
  * @property string $title
  * @property string $author
  * @property string $description
- * 
+ *
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -36,13 +38,20 @@ class BookText extends Model{
     }
 
     // Locale Getters
-    public function getAllLocale(string $lang, int $id){
+
+    /**
+     * @param string $lang
+     * @param int $id
+     * @param string $column
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByLocale(string $lang, int $id, string $column): Collection{
         return self::query()
             ->where('lang', '=', $lang)
             ->where('id', '=', $id)
-            ->first();
+            ->pluck($column);
     }
-    
+
     // Getters
     /**
      * @return int
@@ -66,17 +75,19 @@ class BookText extends Model{
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getTitle(): string{
-        return $this->title;
+    public function getTitle(string $lang): string{
+        return $this->getByLocale($lang, $this->getId(), 'title');
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getAuthor(): string{
-        return $this->author;
+    public function getAuthor(string $lang): string{
+        return $this->getByLocale();
     }
 
     /**
