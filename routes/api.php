@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BookController;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,10 @@ Route::prefix('/user')->group(function(Router $router) {
 //    $router->post('store', [UserController::class, 'store']);
 });
 
+Route::prefix('categories')->group(function (Router $router) {
+    $router->get('getCategories', [CategoryController::class, 'getCategories']);
+});
+
 Route::prefix('book')->group(function (Router $router) {
-    $router->get('getBooks', [BookController::class, 'index']);
+    $router->get('getNewBooks', [BookController::class, 'getBooks']);
 });

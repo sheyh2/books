@@ -3,17 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
-class BookController extends Controller
+class CategoryController extends AbstractApiController
 {
+//    const cacheKey = 'category@lang={key}'
+
     /**
-     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function getBooks(){
-        //
+    public function getCategories(){
+        $cacheKey = 'getCategories@lang='.$this->lang;
+
+        $data = Cache::get($cacheKey);
+        if (is_null($data)){
+//            $data = Category
+        }
     }
 
     /**

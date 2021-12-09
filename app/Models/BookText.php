@@ -37,19 +37,9 @@ class BookText extends Model{
         $this->belongsTo(Book::class, 'book_id', 'id');
     }
 
-    // Locale Getters
-
-    /**
-     * @param string $lang
-     * @param int $id
-     * @param string $column
-     * @return \Illuminate\Support\Collection
-     */
-    public function getByLocale(string $lang, int $id, string $column): Collection{
+    public function getItems(string $lang, $paginate){
         return self::query()
-            ->where('lang', '=', $lang)
-            ->where('id', '=', $id)
-            ->pluck($column);
+            ->where('lang', '=', $lang);
     }
 
     // Getters
