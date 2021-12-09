@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Categories;
 
+use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -14,6 +15,12 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        /** @var Category $category */
+        $category = $this;
+        return [
+            'id' => $category->getId(),
+            'title' => $category->getTitle(),
+            'sub_categories' => SubCategoryResource::collection($category->relationSubCategory)
+        ];
     }
 }

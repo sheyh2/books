@@ -3,24 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Categories\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class CategoryController extends AbstractApiController
 {
-//    const cacheKey = 'category@lang={key}'
+   const cacheKey = 'category@lang={key}';
 
     /**
      *
      */
     public function getCategories(){
-        $cacheKey = 'getCategories@lang='.$this->lang;
+        Str::replaceArray('key', [$this->lang], self::cacheKey);
 
-        $data = Cache::get($cacheKey);
+        $data = Cache::get(self::cacheKey);
         if (is_null($data)){
-//            $data = Category
+           $data = (new Category())->getItems($this->lang);
+        //    Cache::put(self::cacheKey, $data, now()->addHour(1));
         }
+        return \response()->json([
+            'data' => CategoryResource::collection($data)
+        ]);
     }
 
     /**

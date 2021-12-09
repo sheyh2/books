@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Categories;
 
+use App\Models\SubCategory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubCategoryResource extends JsonResource
@@ -14,6 +15,11 @@ class SubCategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        /** @var SubCategory $subCategory */
+        $subCategory = $this;
+        return [
+            'id' => $subCategory->getId(),
+            'title' => $subCategory->getTitle()
+        ];
     }
 }
