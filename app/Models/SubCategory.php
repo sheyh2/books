@@ -4,22 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
  * Class SubCategory
  * @package App\Models\SubCategory
- * 
+ *
  * @property int    $id
  * @property int    $category_id
  * @property string $title
- * 
+ *
  * @property Carbon $created_at
  * @property Carbon $deleted_at
  * @property Carbon $updated_at
+ *
+ * @property Book   $relationBook
  */
 class SubCategory extends Model{
-    protected $table = 'categories';
+    protected $table = 'sub_categories';
 
     // Override
     /**
@@ -29,10 +32,12 @@ class SubCategory extends Model{
         return parent::query();
     }
 
-    public function getItems($lang){
-        self::query()
-            ->where('lang', '=', $lang)
-            ->get();
+    // Related
+    /**
+     * @return BelongsTo
+     */
+    public function relationBook(): BelongsTo{
+        return $this->belongsTo(Book::class, 'sub_category_id', 'id');
     }
 
     // Getters

@@ -12,6 +12,7 @@ class Authenticate{
      */
     public static function checkToken(): bool{
         $token = request()->header('token');
+        dd($token);
         return User::query()
             ->where('token', '=', $token)
             ->exists();

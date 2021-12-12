@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -10,15 +12,17 @@ use Illuminate\Database\Eloquent\Builder;
  * Class Book
  * @package App\Models\Book
  *
- * @property int    $id
- * @property int    $sub_category_id
- * @property int    $image_id
- * @property int    $file_id
- * @property float $rating
- * @property int    $publish_date
+ * @property int      $id
+ * @property int      $image_id
+ * @property int      $file_id
+ * @property float    $rating
+ * @property int      $publish_date
  *
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property Carbon   $created_at
+ * @property Carbon   $updated_at
+ *
+ * @property BookText $relationBookText
+ * @property Image    $relationImage
  */
 class Book extends Model{
     /**
@@ -45,7 +49,40 @@ class Book extends Model{
     }
 
     // Actions
-    //
+
+    /**
+     * @param int $paginate
+     * @return LengthAwarePaginator
+     */
+    public function paginateList(int $paginate): LengthAwarePaginator{
+        return self::query()
+            ->paginate($paginate);
+    }
+
+    // Related
+    /**
+     * @return BelongsTo
+     */
+    public function relationBookText(): BelongsTo{
+        return $this->belongsTo(BookText::class, 'id', 'book_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function relationImage(): BelongsTo{
+        return $this->belongsTo(Image::class, 'id', 'image_id');
+    }
+
+    /**
+     * @param int $paginate
+     * @return LengthAwarePaginator
+     */
+    public function getItems(int $paginate = 10): LengthAwarePaginator{
+        return self::query()
+            ->with(['relationBookText'])
+            ->paginate($paginate);
+    }
 
     // Getters
     /**
@@ -53,13 +90,6 @@ class Book extends Model{
      */
     public function getId(): int{
         return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSubCategoryId(): int{
-        return $this->sub_category_id;
     }
 
     /**

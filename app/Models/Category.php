@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,15 +11,15 @@ use Illuminate\Support\Carbon;
 /**
  * Class Category
  * @package App\Models\Category
- * 
+ *
  * @property int    $id
  * @property string $lang
  * @property string $title
- * 
+ *
  * @property Carbon $created_at
  * @property Carbon $deleted_at
  * @property Carbon $updated_at
- * 
+ *
  * @property SubCategory $relationSubCategory
  */
 class Category extends Model{
@@ -41,9 +42,19 @@ class Category extends Model{
     }
 
     public function getItems($lang){
-        self::query()
+        return self::query()
             ->where('lang', '=', $lang)
+            ->with(['relationSubCategory'])
             ->get();
+    }
+
+    /**
+     * @param int $paginate
+     * @return LengthAwarePaginator
+     */
+    public function paginateList(int $paginate): LengthAwarePaginator{
+        return self::query()
+            ->paginate($paginate);
     }
 
     // Getters

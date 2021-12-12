@@ -20,8 +20,9 @@ class AbstractApiController extends Controller{
         if (!in_array($this->lang, $this->languages))
             $this->lang = 'ru';
 
-        if (\request()->hasHeader('token'))
+        if (\request()->hasHeader('token')){
             $this->isAuth = Authenticate::checkToken();
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @package App\Models\BookText
  *
  * @property int    $id
+ * @property int    $sub_category_id
  * @property int    $book_id
  * @property string $lang
  * @property string $title
@@ -32,13 +34,21 @@ class BookText extends Model{
     }
 
     // Related
-    public function relationBook(){
-        $this->belongsTo(Book::class, 'book_id', 'id');
+    /**
+     * @return BelongsTo
+     */
+    public function relationBook(): BelongsTo{
+        return $this->belongsTo(Book::class, 'book_id', 'id');
+    }
+
+    public function relationLabeled(){
+//        return $this->belongsTo()
     }
 
     public function getItems(string $lang, $paginate){
         return self::query()
-            ->where('lang', '=', $lang);
+            ->where('lang', '=', $lang)
+            ->get();
     }
 
     // Getters
@@ -47,6 +57,13 @@ class BookText extends Model{
      */
     public function getId(): int{
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubCategoryId(): int{
+        return $this->sub_category_id;
     }
 
     /**

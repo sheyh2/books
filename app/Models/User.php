@@ -55,6 +55,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // Getters
     /**
      * @return int
      */
@@ -100,7 +101,7 @@ class User extends Authenticatable
     /**
      * @return Carbon
      */
-    public function getcreated_at(): Carbon{
+    public function getCreatedAt(): Carbon{
         return $this->created_at;
     }
 }

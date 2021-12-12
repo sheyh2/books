@@ -30,5 +30,5 @@ Route::prefix('categories')->group(function (Router $router) {
 });
 
 Route::prefix('book')->group(function (Router $router) {
-    $router->get('getNewBooks', [BookController::class, 'getBooks']);
+    $router->get('getBooks', [BookController::class, 'getBooks']);
 });

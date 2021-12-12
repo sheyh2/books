@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Resources\Books\BookResource;
+use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
-class BookController extends Controller
+class BookController extends AbstractApiController
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function getBooks(){
-        //
+    public function getBooks(Request $request): JsonResponse{
+        $cacheKey   =  'getBooks@lang=';
+        $paginate   = $request->input('paginate', 10);
+        $cacheKey   = $cacheKey. $this->lang;
+
+        $data       = Cache::get($cacheKey);
+        if (is_null($data)){
+            $data   = (new Book())->getItems($paginate);
+            Cache::put($cacheKey, $data, now()->addHours(3));
+        }
+        return self::renderJson(new BookResource($data), 'ok');
     }
 
     /**
