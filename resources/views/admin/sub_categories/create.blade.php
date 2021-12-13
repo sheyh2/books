@@ -20,34 +20,10 @@
                 <div class="breadcrumb">
                     <a href="{{ route('admin.main') }}" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
                     <a href="{{ route('admin.categories.index') }}" class="breadcrumb-item">Список категории</a>
-                    <span class="breadcrumb-item active">Добавить</span>
+                    <span class="breadcrumb-item active">Добавление</span>
                 </div>
 
                 <a href="#" class="header-elements-toggle text-body d-lg-none"><i class="icon-more"></i></a>
-            </div>
-
-            <div class="header-elements d-none">
-                <div class="breadcrumb justify-content-center">
-                    <a href="#" class="breadcrumb-elements-item">
-                        <i class="icon-comment-discussion mr-2"></i>
-                        Support
-                    </a>
-
-                    <div class="breadcrumb-elements-item dropdown p-0">
-                        <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-gear mr-2"></i>
-                            Settings
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item"><i class="icon-user-lock"></i> Account security</a>
-                            <a href="#" class="dropdown-item"><i class="icon-statistics"></i> Analytics</a>
-                            <a href="#" class="dropdown-item"><i class="icon-accessibility"></i> Accessibility</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item"><i class="icon-gear"></i> All settings</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -62,19 +38,26 @@
                 <!-- Basic layout-->
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Basic layout</h5>
+                        <h5 class="card-title">Добавление</h5>
+                        @if (session('error'))
+                            <p class="text-danger">{{ session('error') }}</p>
+                        @endif
+                        @if (session('success'))
+                            <p class="text-success">{{ session('success') }}</p>
+                        @endif
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('admin.categories.store')}}">
+                        <form action="{{ route('admin.sub_categories.store')}}" method="post">
+                            @csrf
                             <div class="form-group">
                                 <label>Название уз:</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="titleUz" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label>Название ру:</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="titleRu" class="form-control">
                             </div>
 
                             <div class="text-right">

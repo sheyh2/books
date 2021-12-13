@@ -40,6 +40,12 @@ class SubCategory extends Model{
         return $this->belongsTo(Book::class, 'sub_category_id', 'id');
     }
 
+    public function paginateList($paginate = 10, $category_id){
+        return self::query()
+            ->where('category_id', '=', $category_id)
+            ->paginate($paginate);
+    }
+
     // Getters
     /**
      * @return int

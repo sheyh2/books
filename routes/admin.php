@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BookController;
 use Illuminate\Routing\Router;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,11 @@ Route::prefix('book')->group(function (Router $router) {
 Route::prefix('category')->group(function (Router $router) {
     $router->get('index', [CategoryController::class, 'index'])->name('admin.categories.index');
     $router->get('create', [CategoryController::class, 'create'])->name('admin.categories.create');
+    $router->post('store', [CategoryController::class, 'store'])->name('admin.categories.store');
+});
+
+Route::prefix('sub-category')->group(function (Router $router) {
+    $router->get('index', [SubCategoryController::class, 'index'])->name('admin.sub_categories.index');
+    $router->get('create', [SubCategoryController::class, 'create'])->name('admin.sub_categories.create');
+    $router->post('store', [SubCategoryController::class, 'store'])->name('admin.sub_categories.store');
 });

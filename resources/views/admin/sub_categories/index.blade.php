@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Models\Category $category
+ * @var \App\Models\SubCategory $subCategory
  */
 ?>
 
@@ -45,7 +45,7 @@
             </div>
 
             <div class="card-body">
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Добавить</a>
+                <a href="{{ route('admin.sub_categories.create') }}" class="btn btn-success">Добавить</a>
             </div>
 
             <div class="table-responsive">
@@ -59,12 +59,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($categories as $i=>$category)
+                    @foreach($subCategories as $i=>$subCategory)
                         <tr>
                             <td>{{ ++$i }}</td>
-                            <td><a href="{{ route('admin.sub_categories.index', ['category_id' => $category->getId()]) }}">{{ $category->getTitle() }}</a></td>
-{{--                            <td>{{ $book->getPublishDate() }}</td>--}}
-                            <td>{{ $category->getCreatedAt() }}</td>
+                            <td><a href="#">{{ $subCategory->getTitle() }}</a></td>
+                            <td>{{ $subCategory->getCreatedAt() }}</td>
                             <td class="text-center">
                                 <div class="list-icons">
                                     <div class="dropdown">

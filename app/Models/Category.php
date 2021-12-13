@@ -24,6 +24,9 @@ use Illuminate\Support\Carbon;
  */
 class Category extends Model{
     protected $table = 'categories';
+    protected $filabel = [
+        'title'
+    ];
 
     // Override
     /**
@@ -46,6 +49,13 @@ class Category extends Model{
             ->where('lang', '=', $lang)
             ->with(['relationSubCategory'])
             ->get();
+    }
+
+    // Actions
+    public function store(array $data){
+        $this->title = $data['title'];
+        $this->lang  = $data['lang'];
+        return $this->save();
     }
 
     /**

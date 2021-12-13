@@ -413,7 +413,7 @@
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-book"></i> <span>Книги</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Form components">
-                            <li class="nav-item"><a href="{{ route('admin.book_lists') }}" class="nav-link">Список книг</a></li>
+                            <li class="nav-item"><a href="{{ route('admin.books.index') }}" class="nav-link">Список книг</a></li>
                         </ul>
                     </li>
                     <!-- /books -->
@@ -425,7 +425,7 @@
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link"><i class="icon-list"></i> <span>Категории</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Form components">
-                            <li class="nav-item"><a href="{{ route('admin.category_lists') }}" class="nav-link">Категории</a></li>
+                            <li class="nav-item"><a href="{{ route('admin.categories.index') }}" class="nav-link">Категории</a></li>
                         </ul>
                     </li>
                     <!-- /categories -->
