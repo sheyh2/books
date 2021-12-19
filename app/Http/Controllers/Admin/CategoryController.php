@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryFormRequest;
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class CategoryController extends AbstractAdminController {
     protected $categoryModel;
@@ -14,7 +16,7 @@ class CategoryController extends AbstractAdminController {
     }
 
     public function index(){
-        $categories = $this->categoryModel->paginateList(10);
+        $categories = $this->categoryModel->getItems();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -22,14 +24,25 @@ class CategoryController extends AbstractAdminController {
         return view('admin.categories.create');
     }
 
-    public function store(CategoryStoreRequest $request){
+    /**
+     * @param CategoryFormRequest $request
+     * @return RedirectResponse
+     */
+    public function store(CategoryFormRequest $request): RedirectResponse{
+        $categoryId = (int)$request->input('id');
         $data = [
-            'title' => $request->input('titleRu'),
-            'lang'  => 'ru'
+            'name' => $request->input('name'),
+            'lang'  => $request->input('lang'),
+            'category_id' => null,
         ];
-        $response = (new Category())->store($data);
+        $response = (new Category())->store($data, $categoryId);
         return $response
             ? redirect()->back()->with('success', 'Успешно')
             : redirect()->back()->with('error', 'Не успешно');
+    }
+
+    public function edit($id){
+        $category = $this->categoryModel->getBothItem($id);
+        return view('admin.categories.edit', compact('category'));
     }
 }

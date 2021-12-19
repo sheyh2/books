@@ -13,20 +13,15 @@ use Illuminate\Support\Carbon;
  * @package App\Models\Category
  *
  * @property int    $id
- * @property string $lang
- * @property string $title
  *
  * @property Carbon $created_at
- * @property Carbon $deleted_at
  * @property Carbon $updated_at
  *
- * @property SubCategory $relationSubCategory
+ * @property SubCategory  $relationSubCategory
+ * @property CategoryText $relationCategoryText
  */
 class Category extends Model{
     protected $table = 'categories';
-    protected $filabel = [
-        'title'
-    ];
 
     // Override
     /**
@@ -44,49 +39,49 @@ class Category extends Model{
         return $this->hasMany(SubCategory::class, 'category_id', 'id');
     }
 
-    public function getItems($lang){
-        return self::query()
-            ->where('lang', '=', $lang)
-            ->with(['relationSubCategory'])
-            ->get();
+    /**
+     * @return HasMany
+     */
+    public function relationCategoryText(): HasMany{
+        return $this->hasMany(CategoryText::class, 'category_id', 'id');
     }
 
     // Actions
-    public function store(array $data){
-        $this->title = $data['title'];
-        $this->lang  = $data['lang'];
-        return $this->save();
-    }
-
-    /**
-     * @param int $paginate
-     * @return LengthAwarePaginator
-     */
-    public function paginateList(int $paginate): LengthAwarePaginator{
-        return self::query()
-            ->paginate($paginate);
+    public function store(array $data, $categoryId){
+        try {
+            ($categoryId !== 0) ?? $this->save();
+            if ($categoryId !== 0) {
+                $this->save();
+                $data['category_id'] = $this->getId();
+                return (new CategoryText())->store($data);
+            }
+            else{
+                $data['category_id'] = $categoryId;
+                return (new CategoryText())->store($data);
+            }
+        }catch (\Exception $exception){
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 
     // Getters
+    public function getItems(){
+        return self::query()
+            ->with(['relationSubCategory', 'relationCategoryText'])
+            ->get();
+    }
+
+    public function getBothItem($id){
+        return self::query()
+            ->where('id', '=', $id)
+            ->first();
+    }
+
     /**
      * @return int
      */
     public function getId(): int{
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLang(): string{
-        return $this->lang;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string{
-        return $this->title;
     }
 
     /**

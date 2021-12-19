@@ -1,8 +1,19 @@
+<?php
+/**
+ * @var Category $category
+ */
+
+use App\Models\Category;
+
+?>
+
 @extends('layouts.admin')
 
 @push('addition-script')
     <script src="{{ asset('admin_assets/global_assets/js/plugins/forms/selects/select2.min.js') }}"></script>
     <script src="{{ asset('admin_assets/global_assets/js/demo_pages/form_layouts.js') }}"></script>
+    <script src="{{ asset('admin_assets/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js') }}"></script>
+    <script src="{{ asset('admin_assets/global_assets/js/demo_pages/form_select2.js') }}"></script>
 @endpush
 
 @section('content')
@@ -10,7 +21,8 @@
     <div class="page-header page-header-light">
         <div class="page-header-content header-elements-lg-inline">
             <div class="page-title d-flex">
-                <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Добавление категории</span></h4>
+                <h4><i class="icon-arrow-left52 mr-2"></i>
+                    <span class="font-weight-semibold">Добавление категории</span></h4>
                 <a href="#" class="header-elements-toggle text-body d-lg-none"><i class="icon-more"></i></a>
             </div>
         </div>
@@ -39,35 +51,36 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Добавление</h5>
-                        @if (session('error'))
-                            <p class="text-danger">{{ session('error') }}</p>
-                        @endif
-                        @if (session('success'))
-                            <p class="text-success">{{ session('success') }}</p>
-                        @endif
+                        @include('admin.responses')
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('admin.categories.store')}}" method="post">
+                        <form action="{{ route('admin.categories.store', ['id' => request()->input('id')])}}" method="post">
                             @csrf
+                            @method('post')
                             <div class="form-group">
-                                <label>Название уз:</label>
-                                <input type="text" name="titleUz" class="form-control">
+                                <label>Название:</label>
+                                <input type="text" name="name" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <label>Название ру:</label>
-                                <input type="text" name="titleRu" class="form-control">
+                                <label class="d-block">Язык:</label>
+                                <select class="form-control select-fixed-single" data-fouc name="lang">
+                                    <option value="">Не выбрано</option>
+                                    <option value="uz">uz</option>
+                                    <option value="ru">ru</option>
+                                </select>
                             </div>
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary">Submit form</button>
+                                <a href="{{ route('admin.categories.index') }}" class="btn btn-primary">Назад</a>
+                                <button type="submit" class="btn btn-success">Добавить</button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <!-- /basic layout -->
-            </div>  
+            </div>
         </div>
         <!-- /vertical form options -->
     </div>

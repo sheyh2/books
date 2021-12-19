@@ -1,7 +1,12 @@
 <?php
 /**
- * @var \App\Models\Category $category
+ * @var Category $category
+ * @var CategoryText $categoryText
  */
+
+use App\Models\Category;
+use App\Models\CategoryText;
+
 ?>
 
 @extends('layouts.admin')
@@ -62,8 +67,14 @@
                     @foreach($categories as $i=>$category)
                         <tr>
                             <td>{{ ++$i }}</td>
-                            <td><a href="{{ route('admin.sub_categories.index', ['category_id' => $category->getId()]) }}">{{ $category->getTitle() }}</a></td>
-{{--                            <td>{{ $book->getPublishDate() }}</td>--}}
+                            <td>
+
+                                @foreach($category->relationCategoryText as $categoryText)
+                                    <a href="{{ route('admin.sub_categories.index', ['category_id' => $category->getId()]) }}">
+                                        {{ $categoryText->getLang() }}: {{ $categoryText->getName() }}
+                                    </a>
+                                @endforeach
+                            </td>
                             <td>{{ $category->getCreatedAt() }}</td>
                             <td class="text-center">
                                 <div class="list-icons">
@@ -73,12 +84,15 @@
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a href="#" class="dropdown-item"><i class="icon-address-book"></i>
-                                                Больше</a>
-                                            <a href="#" class="dropdown-item bg-primary"><i class="icon-pencil text-white"></i>
-                                                Изменить</a>
+                                            <a href="{{ route('admin.categories.create', ['id' => $category->getId()]) }}" class="dropdown-item"><i class="icon-address-book"></i>
+                                                Добавить другой язык
+                                            </a>
+                                            <a href="{{ route('admin.categories.edit', ['id' => $category->getId()]) }}" class="dropdown-item bg-primary"><i class="icon-pencil text-white"></i>
+                                                Изменить
+                                            </a>
                                             <a href="#" class="dropdown-item bg-danger"><i class="icon-trash"></i>
-                                                Удалить</a>
+                                                Удалить
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

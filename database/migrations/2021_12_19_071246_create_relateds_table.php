@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-class CreateRelatedTable extends Migration
+class CreateRelatedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +13,10 @@ class CreateRelatedTable extends Migration
      */
     public function up()
     {
-        Schema::create('related', function (Blueprint $table) {
+        Schema::create('relateds', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('book_id');
-            $table->unsignedBigInteger('related_book_id');
-
-            $table->foreign('book_id')->references('id')->on('books');
-            $table->foreign('related_book_id')->references('id')->on('books');
+            $table->unsignedBigInteger('similar_book_id');
         });
     }
 
@@ -31,6 +27,6 @@ class CreateRelatedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('related');
+        Schema::dropIfExists('relateds');
     }
 }

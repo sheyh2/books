@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @package App\Models\Book
  *
  * @property int      $id
+ * @property int      $sub_category_id
  * @property int      $image_id
  * @property int      $file_id
  * @property float    $rating
@@ -23,23 +25,13 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @property BookText $relationBookText
  * @property Image    $relationImage
+ * @property File     $relationFile
  */
 class Book extends Model{
     /**
      * @var string
      */
     protected $table = 'books';
-
-    /**
-     * @var array
-     */
-    protected $fillablel = [
-        'sub_category_id',
-        'image_id',
-        'like',
-        'dislike',
-        'publish_date'
-    ];
 
     /**
      * @return Builder
@@ -60,11 +52,12 @@ class Book extends Model{
     }
 
     // Related
+
     /**
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function relationBookText(): BelongsTo{
-        return $this->belongsTo(BookText::class, 'id', 'book_id');
+    public function relationBookText(): HasMany{
+        return $this->hasMany(BookText::class, 'book_id', 'id');
     }
 
     /**
@@ -72,6 +65,13 @@ class Book extends Model{
      */
     public function relationImage(): BelongsTo{
         return $this->belongsTo(Image::class, 'id', 'image_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function relationFile(): BelongsTo{
+        return $this->belongsTo(File::class, 'id', 'file_id');
     }
 
     /**
@@ -95,6 +95,13 @@ class Book extends Model{
     /**
      * @return int
      */
+    public function getSubCategoryId(): int{
+        return $this->sub_category_id;
+    }
+
+    /**
+     * @return int
+     */
     public function getImageId():int{
         return $this->image_id;
     }
@@ -104,6 +111,13 @@ class Book extends Model{
      */
     public function getFileId():int{
         return $this->file_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLang():string{
+        return $this->lang;
     }
 
     /**
@@ -118,6 +132,27 @@ class Book extends Model{
      */
     public function getPublishDate(): int{
         return $this->publish_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor(): string{
+        return $this->author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string{
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string{
+        return $this->description;
     }
 
     /**

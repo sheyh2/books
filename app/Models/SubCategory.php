@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -13,13 +15,12 @@ use Illuminate\Support\Carbon;
  *
  * @property int    $id
  * @property int    $category_id
- * @property string $title
  *
  * @property Carbon $created_at
- * @property Carbon $deleted_at
  * @property Carbon $updated_at
  *
  * @property Book   $relationBook
+ * @property SubCategoryText $relationSubCategoryText
  */
 class SubCategory extends Model{
     protected $table = 'sub_categories';
@@ -40,7 +41,19 @@ class SubCategory extends Model{
         return $this->belongsTo(Book::class, 'sub_category_id', 'id');
     }
 
-    public function paginateList($paginate = 10, $category_id){
+    /**
+     * @return HasMany
+     */
+    public function relationSubCategoryText(): HasMany{
+        return $this->hasMany(SubCategoryText::class, 'id', 'sub_category_id');
+    }
+
+    /**
+     * @param int $category_id
+     * @param int $paginate
+     * @return LengthAwarePaginator
+     */
+    public function paginateList(int $category_id, int $paginate = 10): LengthAwarePaginator{
         return self::query()
             ->where('category_id', '=', $category_id)
             ->paginate($paginate);
@@ -53,6 +66,7 @@ class SubCategory extends Model{
     public function getId(): int{
         return $this->id;
     }
+
     /**
      * @return int
      */
@@ -61,30 +75,9 @@ class SubCategory extends Model{
     }
 
     /**
-     * @return string
-     */
-    public function getLang(): string{
-        return $this->lang;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string{
-        return $this->title;
-    }
-
-    /**
      * @return Carbon
      */
     public function getCreatedAt(): Carbon{
         return $this->created_at;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getDeletedAt(): Carbon{
-        return $this->deleted_at;
     }
 }

@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <!-- /basic layout -->
-            </div>  
+            </div>
         </div>
         <!-- /vertical form options -->
     </div>

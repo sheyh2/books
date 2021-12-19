@@ -3,22 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
- * Class BookText
- * @package App\Models\BookText
+ * Class SubCategory
+ * @package App\Models\SubCategory
  *
  * @property int    $id
- * @property int    $book_id
+ * @property int    $sub_category_id
  * @property string $lang
- * @property string $author
  * @property string $title
- * @property string $description
+ *
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ *
  */
-class BookText extends Model
+class SubCategoryText extends Model
 {
-    // Actions
-
     // Getters
     /**
      * @return int
@@ -30,8 +31,8 @@ class BookText extends Model
     /**
      * @return int
      */
-    public function getBookId(): int{
-        return $this->book_id;
+    public function getSubCategoryId(): int{
+        return $this->sub_category_id;
     }
 
     /**
@@ -44,21 +45,7 @@ class BookText extends Model
     /**
      * @return string
      */
-    public function getAuthor(): string{
-        return $this->author;
-    }
-
-    /**
-     * @return string
-     */
     public function getTitle(): string{
         return $this->title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string{
-        return $this->description;
     }
 }
