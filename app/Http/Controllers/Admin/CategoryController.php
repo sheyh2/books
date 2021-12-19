@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CategoryFormRequest;
 use App\Models\Category;
+use App\Models\CategoryText;
+use App\Models\SubCategory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class CategoryController extends AbstractAdminController {
     protected $categoryModel;
@@ -33,9 +34,18 @@ class CategoryController extends AbstractAdminController {
         $data = [
             'name' => $request->input('name'),
             'lang'  => $request->input('lang'),
-            'category_id' => null,
         ];
-        $response = (new Category())->store($data, $categoryId);
+        
+        if (Category::query()->where('id', '=', $categoryId)){
+            if(CategoryText::query()->where('category_id', '=', $categoryId)->where('lang', '=', $data['lang'])->exists()){
+                return redirect()->back()->with('error', 'Этот язык уже добавлен!');
+            }
+            $data = array_merge($data, ['category_id' => $categoryId]);
+            $response = (new CategoryText())->store($data);
+        }
+        else{
+            $response = $this->categoryModel->store($data);
+        }
         return $response
             ? redirect()->back()->with('success', 'Успешно')
             : redirect()->back()->with('error', 'Не успешно');

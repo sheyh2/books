@@ -47,18 +47,11 @@ class Category extends Model{
     }
 
     // Actions
-    public function store(array $data, $categoryId){
+    public function store(array $data){
         try {
-            ($categoryId !== 0) ?? $this->save();
-            if ($categoryId !== 0) {
-                $this->save();
-                $data['category_id'] = $this->getId();
-                return (new CategoryText())->store($data);
-            }
-            else{
-                $data['category_id'] = $categoryId;
-                return (new CategoryText())->store($data);
-            }
+            $this->save();
+            $data['category_id'] = $this->getId();
+            return (new CategoryText())->store($data);
         }catch (\Exception $exception){
             return redirect()->back()->with('error', $exception->getMessage());
         }
